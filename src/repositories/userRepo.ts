@@ -22,9 +22,13 @@ class userRepo {
       user.provider = data.provider
       user.providerId = data.providerId
       user.isActive = true
-      user.refreshToken = tokenUtils.refreshToken(new Types.ObjectId(user?._id))
+      user.refreshToken = tokenUtils.generateRefreshToken(
+        new Types.ObjectId(user?._id),
+      )
       user = await user.save()
-      const accessToken = tokenUtils.accessToken(new Types.ObjectId(user?._id))
+      const accessToken = tokenUtils.generateAccessToken(
+        new Types.ObjectId(user?._id),
+      )
       return { user, accessToken }
     }
     user = new userModel({
@@ -34,13 +38,17 @@ class userRepo {
       lastLoginAt: new Date(Date.now()),
       lastSeenAt: new Date(Date.now()),
     })
-    user.refreshToken = tokenUtils.refreshToken(new Types.ObjectId(user?._id))
+    user.refreshToken = tokenUtils.generateRefreshToken(
+      new Types.ObjectId(user?._id),
+    )
     user = await user.save()
-    const accessToken = tokenUtils.accessToken(new Types.ObjectId(user?._id))
+    const accessToken = tokenUtils.generateAccessToken(
+      new Types.ObjectId(user?._id),
+    )
     return { user, accessToken }
   }
   public async signup(data: IUser.signup) {
-    const emailVerificationToken = tokenUtils.genToken(32)
+    const emailVerificationToken = tokenUtils.genTokenForVerification(32)
     const emailVerificationTokenExpires = Date.now() + 30 * 60 * 1000
     const user = await userModel.create({
       email: data.email,
@@ -68,7 +76,7 @@ class userRepo {
     if (user.isEmailVerified) {
       throw new CustomError("email already verified", 200)
     }
-    const emailVerificationToken = tokenUtils.genToken(32)
+    const emailVerificationToken = tokenUtils.genTokenForVerification(32)
     const emailVerificationTokenExpires = Date.now() + 30 * 60 * 1000
     user.emailVerificationToken = emailVerificationToken
     user.emailVerificationTokenExpires = new Date(emailVerificationTokenExpires)
@@ -107,8 +115,12 @@ class userRepo {
         throw new CustomError("Invalid Password", 401)
       })
     }
-    const refreshToken = tokenUtils.refreshToken(new Types.ObjectId(user._id))
-    const accessToken = tokenUtils.accessToken(new Types.ObjectId(user._id))
+    const refreshToken = tokenUtils.generateRefreshToken(
+      new Types.ObjectId(user._id),
+    )
+    const accessToken = tokenUtils.generateAccessToken(
+      new Types.ObjectId(user._id),
+    )
     user.refreshToken = refreshToken
     user.failedLoginAttempts == 0
     user.loginCount++

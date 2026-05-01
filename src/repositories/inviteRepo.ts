@@ -5,7 +5,7 @@ import { tokenUtils } from "../utils/tokenUtils"
 
 class inviteRepo {
   public async create(data: IInvite.create) {
-    data.token = tokenUtils.genToken(32)
+    data.token = tokenUtils.genTokenForVerification(32)
     const invite = await inviteModel.create(data as IInvite.create)
     return invite
   }

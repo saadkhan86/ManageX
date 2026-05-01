@@ -15,7 +15,14 @@ const authentication = {
         let userId = tokenUtils.verifyAccessToken(token)
         if (!userId) throw new CustomError("invalid token", 401)
         const user = await userModel.findById(userId)
+        if (!user) throw new CustomError("user not found", 404)
+        req.user = user
+        next()
+      } else {
+        throw new CustomError("token required", 401)
       }
-    } catch (error) {}
+    } catch (error) {
+      next(error)
+    }
   },
 }
