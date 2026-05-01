@@ -24,7 +24,5 @@ const workspaceSchema = new mongoose.Schema(
   },
   { timestamps: true },
 )
-workspaceSchema.virtual("isExist").get(function () {
-  return !this.isDeleted
-})
+
 export default mongoose.model("Workspace", workspaceSchema)

@@ -26,6 +26,7 @@ export declare namespace IUser {
     lastLoginAt: Date
     lastSeenAt: Date
     loginCount: number
+    isLocked: boolean
     comparePassword(password: string): Promise<boolean>
   }
 

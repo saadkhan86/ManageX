@@ -108,6 +108,7 @@ class userRepo {
     if (!user) throw new CustomError("user not found", 404)
     if (!user.isEmailVerified)
       throw new CustomError("email verification required", 403)
+    if (!user.isBlocked) throw new CustomError("account temporary locekd", 423)
     const isMatched = await user.comparePassword(data.password)
     if (!isMatched) {
       user.failedLoginAttempts++

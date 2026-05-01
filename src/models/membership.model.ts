@@ -27,7 +27,5 @@ const membershipSchema = new mongoose.Schema(
   },
   { timestamps: true },
 )
-membershipSchema.virtual("isExist").get(function () {
-  return !this.isDeleted
-})
+
 export default mongoose.model("Membership", membershipSchema)

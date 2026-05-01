@@ -48,7 +48,5 @@ const taskSchema = new mongoose.Schema<ITask.Doc>(
     timestamps: true,
   },
 )
-taskSchema.virtual("isExist").get(function () {
-  return !this.isDeleted
-})
+
 export default mongoose.model<ITask.Doc>("Task", taskSchema)

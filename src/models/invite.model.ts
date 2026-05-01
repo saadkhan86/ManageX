@@ -45,7 +45,5 @@ const inviteSchema = new mongoose.Schema<IInvite.Doc>(
   },
   { timestamps: true },
 )
-inviteSchema.virtual("isExist").get(function () {
-  return !this.isDeleted
-})
+
 export default mongoose.model<IInvite.Doc>("Invite", inviteSchema)
