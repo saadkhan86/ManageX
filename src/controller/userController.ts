@@ -76,13 +76,22 @@ const userController = {
     try {
       const { email, password } = req.body
       let user = await userRepo.login({ email, password })
+      console.log(user.accessToken)
+      return res.status(200).json({
+        success: true,
+        message: "user logged in successfully",
+        data: user,
+      })
     } catch (error) {
       next(error)
     }
   },
   update: async (req: Request, res: Response, next: Function) => {
     try {
-      const user = await userRepo.update(req.body as IUser.update)
+      const user = await userRepo.update(
+        req.user!._id,
+        req.body as IUser.update,
+      )
       res
         .status(200)
         .json({ success: true, message: "profile updated successfully" })

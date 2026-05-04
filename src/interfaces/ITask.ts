@@ -16,7 +16,7 @@ export declare namespace ITask {
   }
   interface update {
     taskId: Types.ObjectId | string
-    workspaceId?: Types.ObjectId | string
+    workspaceId: Types.ObjectId | string
     createdBy: Types.ObjectId | string
     assignedTo: Types.ObjectId | string
     title?: string

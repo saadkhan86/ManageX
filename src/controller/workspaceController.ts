@@ -7,6 +7,7 @@ const workspaceController = {
   create: async (req: Request, res: Response, next: Function) => {
     try {
       const workspace = await workspaceRepo.create(
+        req.user?._id as Types.ObjectId,
         req.body as IWorkspace.create,
       )
       res.status(201).json({
@@ -20,7 +21,11 @@ const workspaceController = {
   },
   update: async (req: Request, res: Response, next: Function) => {
     try {
-      const workspace = await workspaceRepo.update(req.body)
+      const workspace = await workspaceRepo.update({
+        ownerId: req.user?._id as Types.ObjectId,
+        workspaceId: req.params.id as string,
+        ...req.body,
+      } as IWorkspace.update)
       res.status(200).json({
         success: true,
         message: "workspace updated successfully",
@@ -32,8 +37,8 @@ const workspaceController = {
   },
   delete: async (req: Request, res: Response, next: Function) => {
     try {
-      const workspace = await workspaceRepo.delete({
-        ownerId: req.user._id,
+      await workspaceRepo.delete({
+        ownerId: req.user?._id as Types.ObjectId,
         workspaceId: req.params.id as string,
       })
       res
@@ -45,11 +50,13 @@ const workspaceController = {
   },
   query: async (req: Request, res: Response, next: Function) => {
     try {
-      const data = await workspaceRepo.query(req.query as IWorkspace.query)
+      const data = await workspaceRepo.query(
+        req.query as unknown as IWorkspace.query,
+      )
       res.status(200).json({
         success: true,
         message: "workspace fetched successfully",
-        AudioData,
+        data,
       })
     } catch (error) {
       next(error)

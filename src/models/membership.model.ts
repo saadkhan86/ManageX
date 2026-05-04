@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
-const membershipSchema = new mongoose.Schema(
+import { IMembership } from "../interfaces/IMembership"
+const membershipSchema = new mongoose.Schema<IMembership.Doc>(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -14,7 +15,7 @@ const membershipSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: ["admin", "manager", "member"],
-      default: "member",
+      default: "admin",
     },
     joinedAt: {
       type: Date,
@@ -23,9 +24,13 @@ const membershipSchema = new mongoose.Schema(
     isDeleted: {
       type: Boolean,
       default: false,
+      select: false,
     },
   },
   { timestamps: true },
 )
-
-export default mongoose.model("Membership", membershipSchema)
+membershipSchema.index(
+  { userId: 1, workspaceId: 1 },
+  { unique: true, partialFilterExpression: { isDeleted: false } },
+)
+export default mongoose.model<IMembership.Doc>("Membership", membershipSchema)

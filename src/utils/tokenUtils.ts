@@ -7,7 +7,7 @@ export const tokenUtils = {
     return crypto.randomBytes(bytes).toString("hex")
   },
   generateRefreshToken: (userId: Types.ObjectId | string) => {
-    return jwt.sign({ _id: userId }, process.env.JWT_REFRESH_SECRET as string, {
+    return jwt.sign({ _id: userId }, process.env.JWT_REFRESH_TOKEN as string, {
       expiresIn: "7d",
     })
   },
@@ -16,12 +16,12 @@ export const tokenUtils = {
       expiresIn: "30min",
     })
   },
-  verifyAccessToken: async (token: string) => {
+  verifyAccessToken: (token: string) => {
     try {
+      console.log(process.env.JWT_ACCESS_TOKEN)
       const decoded = jwt.verify(token, process.env.JWT_ACCESS_TOKEN as string)
-      if (typeof decoded == "string")
-        throw new CustomError("Invalid token", 401)
-      return decoded._id
+      if (typeof decoded == "string") throw new CustomError("Invalid token", 401)
+      return decoded
     } catch (error) {
       return null
     }

@@ -23,6 +23,7 @@ const taskSchema = new mongoose.Schema<ITask.Doc>(
     },
     assignedTo: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "Membership",
       required: true,
     },
     status: {

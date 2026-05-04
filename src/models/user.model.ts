@@ -46,11 +46,6 @@ const userSchema = new mongoose.Schema<IUser.Doc>(
       default: null,
       select: false,
       required: [true, "Password is required"],
-
-      match: [
-        /^[a-zA-Z0-9]{6,}$/,
-        "Password must be at least 6 characters long and contain only letters and numbers",
-      ],
     },
 
     isEmailVerified: {
@@ -137,6 +132,12 @@ const userSchema = new mongoose.Schema<IUser.Doc>(
     isBlocked: {
       type: Boolean,
       default: false,
+      select: false,
+    },
+
+    blockedAt: {
+      type: Date,
+      default: null,
       select: false,
     },
 

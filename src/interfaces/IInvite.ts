@@ -6,7 +6,7 @@ export declare namespace IInvite {
     workspaceId: Types.ObjectId | string
     invitedBy: Types.ObjectId | string
     role: "manager" | "member"
-    token: string
+    token: string | null
     status: "pending" | "accepted" | "rejected" | "expired"
     expiresAt: Date | null
   }

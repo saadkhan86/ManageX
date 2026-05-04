@@ -35,7 +35,6 @@ const inviteSchema = new mongoose.Schema<IInvite.Doc>(
     },
     expiresAt: {
       type: Date,
-      required: true,
       default: null,
     },
     isDeleted: {

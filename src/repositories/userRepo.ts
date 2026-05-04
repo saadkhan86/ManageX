@@ -102,19 +102,27 @@ class userRepo {
     return await user.save()
   }
   public async login(data: IUser.login) {
-    let user = await userModel.findOne({
-      email: data.email,
-    })
+    let user = await userModel
+      .findOne({
+        email: data.email,
+      })
+      .select("+passwordHash +isBlocked +failedLoginAttempts +loginCount")
     if (!user) throw new CustomError("user not found", 404)
     if (!user.isEmailVerified)
       throw new CustomError("email verification required", 403)
-    if (!user.isBlocked) throw new CustomError("account temporary locekd", 423)
     const isMatched = await user.comparePassword(data.password)
     if (!isMatched) {
       user.failedLoginAttempts++
       await user.save().then(() => {
-        throw new CustomError("Invalid Password", 401)
+        throw new CustomError("invalid password", 401)
       })
+    }
+    if (user.failedLoginAttempts >= 5) {
+      user.isBlocked = true
+      user.blockedAt = new Date(Date.now())
+      user.failedLoginAttempts++
+      await user.save()
+      throw new CustomError("your account is temporary locked", 423)
     }
     const refreshToken = tokenUtils.generateRefreshToken(
       new Types.ObjectId(user._id),
@@ -123,14 +131,14 @@ class userRepo {
       new Types.ObjectId(user._id),
     )
     user.refreshToken = refreshToken
-    user.failedLoginAttempts == 0
+    user.failedLoginAttempts = 0
     user.loginCount++
     user.lastSeenAt = new Date(Date.now())
     user = await user.save()
     return { accessToken, refreshToken, user }
   }
-  public async update(data: IUser.update) {
-    let user = await userModel.findOne({ _id: data.userId })
+  public async update(userId: Types.ObjectId | string, data: IUser.update) {
+    let user = await userModel.findById(userId)
     if (!user) throw new CustomError("user not found", 404)
     if (data.name) user.name = data.name
     if (data.bio) user.bio = data.bio

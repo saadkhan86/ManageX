@@ -1,7 +1,8 @@
-import mongoose from "mongoose"
+import mongoose, { Types } from "mongoose"
+import { Document } from "mongoose"
 
 export declare namespace IUser {
-  interface Doc {
+  interface Doc extends Document {
     name: string
     email: string
     username: string
@@ -21,6 +22,7 @@ export declare namespace IUser {
     providerId: string
     isActive: boolean
     isBlocked: boolean
+    blockedAt: Date | null
     failedLoginAttempts: number
     lockedUntil: Date
     lastLoginAt: Date
@@ -50,7 +52,6 @@ export declare namespace IUser {
   }
 
   interface update {
-    userId: mongoose.Schema.Types.ObjectId | string
     name?: string
     phoneNumber?: string
     bio?: string
@@ -58,12 +59,8 @@ export declare namespace IUser {
     timezone?: string
   }
 
-  interface remove {
-    userId: mongoose.Schema.Types.ObjectId | string
-  }
-
   interface query {
-    userId?: mongoose.Schema.Types.ObjectId | string
+    userId?: Types.ObjectId | string
     name?: string
     email?: string
     username?: string

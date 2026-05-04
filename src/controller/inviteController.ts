@@ -1,14 +1,36 @@
 import { NextFunction, Request, Response } from "express"
 import inviteRepo from "../repositories/inviteRepo"
+import workspaceRepo from "../repositories/workspaceRepo"
 import { IInvite } from "../interfaces/IInvite"
 import emailUtils from "../utils/emailUtils"
+import { Types } from "mongoose"
+import membershipRepo from "../repositories/membershipRepo"
 
 const inviteController = {
   create: async (req: Request, res: Response, next: Function) => {
     try {
-      const invite = await inviteRepo.create(req.body as IInvite.create)
+      const invite = await inviteRepo.create({
+        email: req.body.email,
+        workspaceId: req.body.workspaceId,
+        invitedBy: req.user?._id as Types.ObjectId,
+        role: req.body.role,
+        token: null,
+        status: "pending",
+        expiresAt: null,
+      })
+      const { workspaces } = await workspaceRepo.query({
+        workspaceId: req.body.workspaceId,
+      })
+      const workspaceName = workspaces[0]?.name || "Workspace"
+
       emailUtils
-        .sendInviteEmail(req.user.name, invite.email, invite.token)
+        .sendInviteEmail(
+          req.user?.name as string,
+          invite.email,
+          invite.token as string,
+          workspaceName,
+          invite.role,
+        )
         .catch((error) => console.error(error))
       res
         .status(201)
@@ -23,18 +45,40 @@ const inviteController = {
         return res
           .status(401)
           .json({ success: false, message: "Token required" })
-      const invite = await inviteRepo.update(
+      const { invite, userId } = await inviteRepo.update(
         req.params.token as string,
         req.params.isAccepted as "accepted" | "rejected",
       )
+      if (invite.status === "accepted") {
+        const existingMembership = await membershipRepo.query({
+          userId: userId as Types.ObjectId,
+          workspaceId: invite.workspaceId as Types.ObjectId,
+        })
+        if (existingMembership.memberships.length > 0) {
+          return res.status(200).json({
+            success: true,
+            message: `You are already a member of this workspace`,
+          })
+        }
+        await membershipRepo.create({
+          userId: userId as Types.ObjectId,
+          workspaceId: invite.workspaceId as Types.ObjectId,
+          role: invite.role,
+          joinedAt: new Date(),
+        })
+      }
+      return res.status(200).json({
+        success: true,
+        message: `invite ${invite.status} successfully`,
+      })
     } catch (error) {
       next(error)
     }
   },
   delete: async (req: Request, res: Response, next: Function) => {
     try {
-      const invite = await inviteRepo.delete({
-        invitedBy: req.user._id,
+      await inviteRepo.delete({
+        invitedBy: req.user?._id as Types.ObjectId,
         inviteId: req.params.id as string,
       })
       res

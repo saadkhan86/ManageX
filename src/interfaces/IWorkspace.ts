@@ -3,7 +3,6 @@ import mongoose, { Types } from "mongoose"
 export declare namespace IWorkspace {
   interface create {
     name: string
-    ownerId: Types.ObjectId | string
     description: string
   }
   interface Doc extends create, Document {
