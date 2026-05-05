@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import { tokenUtils } from "../utils/tokenUtils"
 import CustomError from "../errorHandler/CustomError"
 import userModel from "../models/user.model"
-import { Types } from "mongoose"
 
 const authentication = {
   authUser: async (req: Request, res: Response, next: Function) => {

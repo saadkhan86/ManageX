@@ -55,6 +55,7 @@ class taskRepo {
         { path: "createdBy", select: "name" },
         { path: "assignedTo", select: "name" },
       ])
+      .lean()
     const count = await taskModel.countDocuments(_query)
     return { tasks, count }
   }

@@ -1,11 +1,27 @@
 import env from "dotenv"
 env.config()
-import express from "express"
+import express, { Request, Response } from "express"
 import connection from "./config/database"
 import router from "./routes/router"
 import returnError from "./utils/responseUtils"
+import helmet from "helmet"
+import rateLimit from "express-rate-limit"
 
 const app = express()
+
+app.use(helmet({ contentSecurityPolicy: false }))
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  handler: (req: Request, res: Response) => {
+    res.status(429).json({
+      success: false,
+      message: "Too many requests",
+    })
+  },
+})
+app.use(limiter)
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

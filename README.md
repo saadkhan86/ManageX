@@ -1,74 +1,126 @@
-# ManageX
+# 🚀 ManageX - Advanced Project Management API
 
-ManageX is a robust backend API built with Node.js, Express, and TypeScript. It utilizes MongoDB for data storage and includes features like JWT-based authentication and email services. 
+ManageX is a high-performance, enterprise-ready backend API designed to streamline project management, task tracking, and team collaboration. Built with a focus on scalability, security, and developer experience.
 
-## Tech Stack
+---
 
-- **Runtime:** [Node.js](https://nodejs.org/)
-- **Framework:** [Express](https://expressjs.com/)
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **Database:** [MongoDB](https://www.mongodb.com/) (via [Mongoose](https://mongoosejs.com/))
-- **Authentication:** [JSON Web Tokens (JWT)](https://jwt.io/) & [bcrypt](https://www.npmjs.com/package/bcrypt)
-- **Mailing:** [Nodemailer](https://nodemailer.com/)
+## ✨ Key Features
 
-## Project Structure
+- **🔐 Robust Authentication:** JWT-based secure authentication with refresh token logic and password hashing via Bcrypt.
+- **🏗️ Workspace Management:** Create, manage, and collaborate within dedicated workspaces.
+- **👥 Team Collaboration:** Invite members via email, manage memberships, and define roles.
+- **📋 Task Orchestration:** Comprehensive task management system with support for statuses, assignments, and tracking.
+- **🛡️ Security First:** Integrated security layers including Helmet for header protection and Rate Limiting to prevent abuse.
+- **✉️ Automated Notifications:** Built-in email service for invites and system notifications.
 
-The project follows a layered architecture to ensure separation of concerns and maintainability:
+---
+
+## 🛠️ Tech Stack
+
+| Component | Technology |
+| :--- | :--- |
+| **Runtime** | [Node.js](https://nodejs.org/) |
+| **Framework** | [Express.js](https://expressjs.com/) |
+| **Language** | [TypeScript](https://www.typescriptlang.org/) |
+| **Database** | [MongoDB](https://www.mongodb.com/) (Mongoose ODM) |
+| **Auth** | JWT (JSON Web Tokens) & Bcrypt |
+| **Mailing** | Nodemailer |
+| **Security** | Helmet & Express Rate Limit |
+
+---
+
+## 📂 Project Architecture
+
+The codebase follows a **Clean Layered Architecture** to ensure maintainability and testability:
 
 ```text
 src/
-├── config/        # Environment and configuration variables
-├── controller/    # Request handlers parsing input and sending responses
-├── errorHandler/  # Custom error handling classes and middleware
-├── interfaces/    # TypeScript interfaces and type definitions
-├── middleware/    # Express middleware (e.g., authentication)
-├── models/        # Mongoose database schemas and models
-├── repositories/  # Database access logic (data layer)
-├── routes/        # API route definitions
-├── services/      # Core business logic
-├── utils/         # Utility functions and helpers
-└── server.ts      # Application entry point
+├── config/        # Environment configurations & Database connection
+├── controller/    # HTTP Request handlers
+├── errorHandler/  # Centralized error handling logic
+├── interfaces/    # Type-safe contract definitions
+├── middleware/    # Auth guards, validation, and security layers
+├── models/        # Mongoose data schemas
+├── repositories/  # Data access layer (abstraction over models)
+├── routes/        # API endpoint mapping (versioned)
+├── services/      # Business logic orchestration
+├── utils/         # Reusable helper functions
+└── server.ts      # Application bootstrap
 ```
 
-## Prerequisites
+---
 
-- Node.js (v18 or higher recommended)
-- MongoDB instance (local or Atlas)
+## 🚀 Getting Started
 
-## Environment Variables
+### Prerequisites
 
-To run this project, you will need to add the following environment variables to your `.env` file. You can use the `sample.env` file as a reference.
+- [Node.js](https://nodejs.org/) (v18.x or higher)
+- [MongoDB](https://www.mongodb.com/) (Local instance or Atlas)
 
-## Setup & Installation
+### Installation
 
-1. **Clone the repository:**
+1. **Clone the repository**
    ```bash
    git clone <repository-url>
    cd ManageX
    ```
 
-2. **Install dependencies:**
+2. **Install Dependencies**
    ```bash
    npm install
    ```
 
-3. **Set up your `.env` file:**
-   Copy `sample.env` to `.env` and fill in your details.
+3. **Configure Environment**
+   Create a `.env` file in the root directory (referencing `sample.env`):
    ```bash
    cp sample.env .env
    ```
+   Fill in your credentials:
+   ```env
+   PORT=8080
+   MONGODB_URI=your_mongodb_uri
+   JWT_ACCESS_TOKEN=your_access_secret
+   JWT_REFRESH_TOKEN=your_refresh_secret
+   EMAIL_USER=your_email
+   EMAIL_PASSWORD=your_password
+   ```
 
-4. **Start the development server:**
+4. **Launch the Server**
    ```bash
    npm run dev
    ```
 
-## Scripts
+---
 
-- `npm run dev`: Starts the development server with hot-reloading using `tsx`.
-- `npm run build`: Compiles the TypeScript code into JavaScript.
-- `npm start`: Runs the application.
+## 🛣️ API Modules
 
-## License
+The API is served under `/api/v1/` and includes the following primary modules:
 
-[ISC](https://choosealicense.com/licenses/isc/)
+- **User:** `/user` - Profile management and authentication.
+- **Workspace:** `/workspace` - Creation and management of project spaces.
+- **Task:** `/task` - Task lifecycle and management.
+- **Invite:** `/invite` - Email-based team invitations.
+- **Membership:** `/membership` - Team member role and access management.
+- **Tokens:** `/token` - Token refresh and session management.
+
+---
+
+## 📜 Available Scripts
+
+- `npm run dev`: Start development server with hot-reloading (`tsx watch`).
+- `npm run build`: Compile TypeScript into production-ready JavaScript.
+- `npm start`: Run the compiled production bundle.
+
+---
+
+## 🛡️ Security Measures
+
+- **Helmet:** Protects against well-known web vulnerabilities by setting HTTP headers appropriately.
+- **Rate Limiting:** Prevents Brute-force attacks (Default: 100 requests per 15 minutes).
+- **Environment Isolation:** Sensitive data managed via `.env` files.
+
+---
+
+## 📄 License
+
+Distributed under the [ISC License](https://choosealicense.com/licenses/isc/).

@@ -39,7 +39,7 @@ const taskController = {
         assignedTo: req.body.assignedTo as Types.ObjectId,
         status: req.body.status || "todo",
         priority: req.body.priority || "low",
-        dueDate: req.body.dueDate,
+        dueDate: req.body.dueDate || null,
       })
       return res.status(200).json({
         success: true,
@@ -60,10 +60,10 @@ const taskController = {
           .status(404)
           .json({ success: false, message: "Task not found" })
       }
-      const task = tasks[0]
+      const task: any = tasks[0]
       const permission = await membershipRepo.query({
         userId: req.user?._id,
-        workspaceId: task.workspaceId.toString(),
+        workspaceId: task.workspaceId?._id,
       })
       if (!permission.memberships || permission.count === 0) {
         return res
@@ -73,7 +73,7 @@ const taskController = {
       const role = permission.memberships[0].role
       const userId = req.user?._id?.toString()
       let updateData: any = { taskId: req.params.id as string }
-      if (task.assignedTo.toString() === userId) {
+      if (task.assignedTo?._id.toString() === userId) {
         if (!req.body.status) {
           return res.status(400).json({
             success: false,

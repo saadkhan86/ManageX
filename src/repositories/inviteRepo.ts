@@ -72,6 +72,7 @@ class inviteRepo {
       .limit(limit)
       .lean()
       .populate("invitedBy")
+      .lean()
     const count = await inviteModel.countDocuments(_query)
     return { invites, count }
   }

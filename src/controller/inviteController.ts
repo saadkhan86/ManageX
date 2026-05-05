@@ -9,6 +9,24 @@ import membershipRepo from "../repositories/membershipRepo"
 const inviteController = {
   create: async (req: Request, res: Response, next: Function) => {
     try {
+      const workspace = await workspaceRepo.query({
+        workspaceId: req.body.workspaceId,
+      })
+      if (!workspace.workspaces.length) {
+        return res.status(404).json({
+          success: false,
+          message: "Workspace not found",
+        })
+      }
+      if (
+        workspace.workspaces[0].ownerId._id.toString() !==
+        req.user?._id.toString()
+      ) {
+        return res.status(401).json({
+          success: false,
+          message: "You are not authorized to create invites in this workspace",
+        })
+      }
       const invite = await inviteRepo.create({
         email: req.body.email,
         workspaceId: req.body.workspaceId,
