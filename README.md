@@ -1,21 +1,21 @@
-# 🚀 ManageX - Advanced Project Management API
+#  ManageX - Advanced Project Management API
 
 ManageX is a high-performance, enterprise-ready backend API designed to streamline project management, task tracking, and team collaboration. Built with a focus on scalability, security, and developer experience.
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
-- **🔐 Robust Authentication:** JWT-based secure authentication with refresh token logic and password hashing via Bcrypt.
-- **🏗️ Workspace Management:** Create, manage, and collaborate within dedicated workspaces.
-- **👥 Team Collaboration:** Invite members via email, manage memberships, and define roles.
-- **📋 Task Orchestration:** Comprehensive task management system with support for statuses, assignments, and tracking.
-- **🛡️ Security First:** Integrated security layers including Helmet for header protection and Rate Limiting to prevent abuse.
-- **✉️ Automated Notifications:** Built-in email service for invites and system notifications.
+- ** Robust Authentication:** JWT-based secure authentication with refresh token logic and password hashing via Bcrypt.
+- ** Workspace Management:** Create, manage, and collaborate within dedicated workspaces.
+- ** Team Collaboration:** Invite members via email, manage memberships, and define roles.
+- ** Task Orchestration:** Comprehensive task management system with support for statuses, assignments, and tracking.
+- ** Security First:** Integrated security layers including Helmet for header protection and Rate Limiting to prevent abuse.
+- ** Automated Notifications:** Built-in email service for invites and system notifications.
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Component | Technology |
 | :--- | :--- |
@@ -29,7 +29,7 @@ ManageX is a high-performance, enterprise-ready backend API designed to streamli
 
 ---
 
-## 📂 Project Architecture
+##  Project Architecture
 
 The codebase follows a **Clean Layered Architecture** to ensure maintainability and testability:
 
@@ -50,7 +50,7 @@ src/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -92,7 +92,7 @@ src/
 
 ---
 
-## 🛣️ API Modules
+##  API Modules
 
 The API is served under `/api/v1/` and includes the following primary modules:
 
@@ -105,7 +105,7 @@ The API is served under `/api/v1/` and includes the following primary modules:
 
 ---
 
-## 📜 Available Scripts
+##  Available Scripts
 
 - `npm run dev`: Start development server with hot-reloading (`tsx watch`).
 - `npm run build`: Compile TypeScript into production-ready JavaScript.
@@ -113,7 +113,7 @@ The API is served under `/api/v1/` and includes the following primary modules:
 
 ---
 
-## 🛡️ Security Measures
+##  Security Measures
 
 - **Helmet:** Protects against well-known web vulnerabilities by setting HTTP headers appropriately.
 - **Rate Limiting:** Prevents Brute-force attacks (Default: 100 requests per 15 minutes).
@@ -121,6 +121,6 @@ The API is served under `/api/v1/` and includes the following primary modules:
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the [ISC License](https://choosealicense.com/licenses/isc/).
