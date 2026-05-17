@@ -32,7 +32,6 @@ const userSchema = new mongoose.Schema<IUser.Doc>(
       index: true,
       sparse: true,
       default: null,
-      required: [true, "Username is required"],
       minlength: [3, "Username must be at least 3 characters"],
       maxlength: [30, "Username cannot exceed 30 characters"],
       match: [

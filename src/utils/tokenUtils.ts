@@ -18,9 +18,9 @@ export const tokenUtils = {
   },
   verifyAccessToken: (token: string) => {
     try {
-      console.log(process.env.JWT_ACCESS_TOKEN)
       const decoded = jwt.verify(token, process.env.JWT_ACCESS_TOKEN as string)
-      if (typeof decoded == "string") throw new CustomError("Invalid token", 401)
+      if (typeof decoded == "string")
+        throw new CustomError("Invalid token", 401)
       return decoded
     } catch (error) {
       return null
