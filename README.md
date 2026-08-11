@@ -1,6 +1,6 @@
 # ManageX - Advanced Project Management API
 
-ManageX is a high-performance, enterprise-ready backend API designed to streamline project management, task tracking, and team collaboration. Built with a focus on scalability, security, and developer experience.
+ManageX is a high-performance, enterprise-ready backend API that designed to streamline project management, task tracking, and team collaboration. Built with a focus on scalability, security, and developer experience.
 
 ---
 
